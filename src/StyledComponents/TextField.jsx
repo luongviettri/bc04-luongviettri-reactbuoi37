@@ -25,7 +25,7 @@ const CheckLoi = styled.span`
 `
 export const TextField = ({ label, loi, ...props }) => {
     return (
-        <span className="d-flex flex-column my-2" >
+        <div className="d-flex flex-column my-2" >
             <Label>
                 {label}
             </Label>
@@ -35,6 +35,6 @@ export const TextField = ({ label, loi, ...props }) => {
             <CheckLoi>
                 {loi}
             </CheckLoi>
-        </span>
+        </div>
     )
 }

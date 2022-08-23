@@ -28,7 +28,10 @@ const initialState = {
     sinhVienEdit: {
 
     },
-    disabled: false
+    disabled: false,
+    arrSearch: [
+        
+    ]
 }
 
 export default (state = initialState, { type, payload }) => {

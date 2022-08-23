@@ -3,3 +3,12 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+input.w-50:focus {
+    border: 1px solid green;
+}
+
+input.w-50:focus-visible {
+    border: 1px solid green !important;
+    outline-color: green;
+}
