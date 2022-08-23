@@ -1,0 +1,5 @@
+export const CHANGE_THEME = 'CHANGE_THEME'
+export const THEM_SINH_VIEN = 'THEM_SINH_VIEN'
+export const XOA_SINH_VIEN = 'XOA_SINH_VIEN'
+export const SUA_SINH_VIEN = 'SUA_SINH_VIEN'
+export const UPDATE_SINH_VIEN = 'UPDATE_SINH_VIEN'
