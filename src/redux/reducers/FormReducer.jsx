@@ -1,4 +1,4 @@
-import { CHANGE_THEME, DISABLED, SUA_SINH_VIEN, THEM_SINH_VIEN, UPDATE_SINH_VIEN, XOA_SINH_VIEN } from "../consts/FormConsts"
+import { CHANGE_THEME, DISABLED, SUA_SINH_VIEN, THEM_SINH_VIEN, TIM_KIEM_SINH_VIEN, UPDATE_SINH_VIEN, XOA_SINH_VIEN } from "../consts/FormConsts"
 import { arrTheme } from "../../Theme/ThemeManager"
 
 const initialState = {
@@ -26,11 +26,21 @@ const initialState = {
         },
     ],
     sinhVienEdit: {
-
     },
     disabled: false,
-    arrSearch: [
-        
+    mangDuocTimKiem: [
+        {
+            ma: '1',
+            hoTen: 'Nguyen Van A',
+            soDienThoai: '012346789',
+            email: 'anguyen@gmail.com',
+        },
+        {
+            ma: '2',
+            hoTen: 'Nguyen Van B',
+            soDienThoai: '012346789',
+            email: 'bnguyen@gmail.com',
+        }
     ]
 }
 
@@ -54,12 +64,6 @@ export default (state = initialState, { type, payload }) => {
                 return { ...state, arrListSinhVien: [...state.arrListSinhVien, payload] }
             }
         case XOA_SINH_VIEN: {
-            // console.log(payload);
-            // let newArr = [...state.arrListSinhVien];
-            // newArr = newArr.filter((item) => {
-            //     return item.ma !== payload
-            // })
-            // state.arrListSinhVien = newArr;
             return { ...state, arrListSinhVien: [...state.arrListSinhVien].filter(item => item.ma !== payload) }
         }
         case SUA_SINH_VIEN: {
@@ -80,7 +84,19 @@ export default (state = initialState, { type, payload }) => {
                 ...state, arrListSinhVien: [...mangSinhVien], sinhVienEdit: newSinhVienEdit, disabled: false
             }
         }
+        case TIM_KIEM_SINH_VIEN: {
+            // ! payload là tên sinh viên
+            let mangCanTim = state.arrListSinhVien.filter((sinhVien, index) => {
+                return sinhVien.hoTen.toLocaleLowerCase().includes(payload.toLocaleLowerCase());
+            })
+            payload.length ?
+                state.mangDuocTimKiem = mangCanTim
+                :
+                state.mangDuocTimKiem = state.arrListSinhVien
 
+
+            return { ...state }
+        }
         default:
             return state
     }

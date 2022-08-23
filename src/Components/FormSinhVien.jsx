@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Dropdown } from "../StyledComponents/Dropdown";
 import { arrTheme } from "../Theme/ThemeManager";
-import { actionChangeTheme, actionThemSinhVien, actionUpdate } from "../redux/actions/FormActions";
+import { actionChangeTheme, actionThemSinhVien, actionTimKiem, actionUpdate } from "../redux/actions/FormActions";
 import { PrimaryTheme } from "../Theme/PrimaryTheme";
 import { P } from "../StyledComponents/P";
 import { LightTheme } from "../Theme/LightTheme";
@@ -10,7 +10,7 @@ import { H2 } from "../StyledComponents/H2";
 import { TextField } from "../StyledComponents/TextField";
 import { Button } from "../StyledComponents/Button";
 import { connect } from "react-redux";
-
+import { debounce } from "lodash";
 class FormSinhVien extends Component {
     constructor(props) {
         super(props);
@@ -29,7 +29,9 @@ class FormSinhVien extends Component {
             },
             disabled: false
         };
+
     }
+
     renderTheme = () => {
         return arrTheme.map((theme, index) => {
             return (
@@ -124,6 +126,20 @@ class FormSinhVien extends Component {
 
 
     }
+
+
+
+    handleInputDebounce = (event) => {
+        debounce(
+            this.searchInput(event)
+            , 100)
+    }
+    searchInput = (event) => {
+        let { value } = event.target;
+        this.props.dispatch(actionTimKiem(value))
+    }
+
+
     render() {
         return (
             <>
@@ -204,8 +220,14 @@ class FormSinhVien extends Component {
                 <div className="my-2 row flex-column align-items-center">
                     <p style={{
                         fontSize: "1.5rem"
-                    }} >Tìm theo tên</p>
-                    <input type="text" className="w-50 rounded border border-success py-2 px-2" />
+                    }}>Tìm theo tên</p>
+                    <input
+                        type="text"
+                        className="w-50 rounded border border-success py-2 px-2"
+                        onChange={(event) => {
+                            this.handleInputDebounce(event)
+                        }}
+                    />
                 </div>
             </>
         );
@@ -220,8 +242,7 @@ class FormSinhVien extends Component {
 }
 const mapStateToProps = (state) => ({
     sinhVienEdit: state.FormReducer.sinhVienEdit,
-    disabled: state.FormReducer.disabled,
-
+    disabled: state.FormReducer.disabled
 })
 
 export default connect(mapStateToProps)(FormSinhVien);
