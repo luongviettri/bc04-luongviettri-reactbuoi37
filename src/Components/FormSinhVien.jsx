@@ -10,9 +10,13 @@ import { H2 } from "../StyledComponents/H2";
 import { TextField } from "../StyledComponents/TextField";
 import { Button } from "../StyledComponents/Button";
 import { connect } from "react-redux";
+import { debounce } from "lodash";
+
 class FormSinhVien extends Component {
     constructor(props) {
         super(props);
+        // ! dùng ref để lưu trữ giá trị sau mỗi lần render @@
+        this.myRef = React.createRef();
         this.state = {
             values: {
                 ma: "",
@@ -44,22 +48,39 @@ class FormSinhVien extends Component {
         this.props.dispatch(actionChangeTheme(event.target.value));
     };
     handleChangeInput = (event) => {
-        let { name, value, type, pattern } = event.target;
+        let { name, value, pattern } = event.target;
+        let label = event.target.getAttribute("data-label");
+        let { arrListSinhVien } = this.props;
         // ! valid thông tin
-
         ////!valid rỗng
         if (value == '') {
-            this.state.errors[name] = name + " Không được rỗng";
+            this.state.errors[name] = label + " không được rỗng";
         } else {
-            this.state.errors[name] = "";
+            ////!valid định dạng
+            let re = new RegExp(pattern);
+            if (!value.toLowerCase().match(re)) {
+                this.state.errors[name] = label + " sai định dạng";
+
+            } else {
+                this.state.errors[name] = "";
+                // ! valid ID
+                let trungID = false;
+                if (name == "ma") {
+                    arrListSinhVien.forEach((item) => {
+                        if (item.ma == value) {
+                            trungID = true;
+                        }
+                    })
+                    if (trungID) {
+                        this.state.errors[name] = label + " bị trùng";
+                    } else {
+                        this.state.errors[name] = "";
+                    }
+                }
+            }
+
         }
-        ////!valid định dạng
-        let re = new RegExp(pattern);
-        if (!value.toLowerCase().match(re)) {
-            this.state.errors[name] = name + " Sai định dạng";
-        } else {
-            this.state.errors[name] = ""
-        }
+
 
 
         // ! tạo ra biến mới cho state để gán
@@ -125,16 +146,23 @@ class FormSinhVien extends Component {
 
 
     }
-
-    // handleInputDebounce = (event) => {
-    //     debounce(this.searchInput(event), 1000)
-    // }
-    searchInput = (event) => {
-        let { value } = event.target;
-        this.props.dispatch(actionTimKiem(value))
+    handleChangeSearchInput = (event) => {
+        if (this.myRef.current) {  //! tức là nếu họ đang gõ thì clear cái ban đầu đi á
+            console.log('this.myRef.current: ', this.myRef.current);
+            clearTimeout(this.myRef.current);
+        }
+        this.myRef.current = setTimeout(() => {
+            let { value } = event.target;
+            this.props.dispatch(actionTimKiem(value));
+        }, 300)
     }
+    // searchInput = (event) => {
+    //     let { value } = event.target;
+    //     this.props.dispatch(actionTimKiem(value));
+    // }
 
     render() {
+
         return (
             <>
                 <div>
@@ -151,12 +179,14 @@ class FormSinhVien extends Component {
                     <div className="row">
                         <div className="col-6">
                             <TextField
+                                disabled={this.props.disabled}
                                 label="Mã SV"
                                 className="rounded my-2"
                                 type="text"
                                 onChange={this.handleChangeInput}
                                 value={this.state.values.ma}
                                 name="ma"
+                                data-label="Mã sinh viên"
                                 loi={this.state.errors.ma}
                                 pattern="^([1-9][0-9]{0,2}|1000)$"
                             />
@@ -169,6 +199,8 @@ class FormSinhVien extends Component {
                                 loi={this.state.errors.soDienThoai}
                                 type="number"
                                 pattern="(84|0[3|5|7|8|9])+([0-9]{8})\b"
+                                data-label="Số điện thoại "
+
 
                             />
                         </div>
@@ -181,7 +213,9 @@ class FormSinhVien extends Component {
                                 value={this.state.values.hoTen}
                                 name="hoTen"
                                 loi={this.state.errors.hoTen}
-                                pattern="[^a-z0-9A-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễếệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]"
+                                pattern="^([^0-9]*)$"
+                                data-label="Họ tên "
+
                             />
                             <TextField
                                 label="Email"
@@ -191,6 +225,8 @@ class FormSinhVien extends Component {
                                 name="email"
                                 loi={this.state.errors.email}
                                 pattern='^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
+                                data-label="Email "
+
                             />
                         </div>
                     </div>
@@ -219,7 +255,7 @@ class FormSinhVien extends Component {
                         type="text"
                         className="w-50 rounded border border-success py-2 px-2"
                         onChange={(event) => {
-                            this.searchInput(event)
+                            this.handleChangeSearchInput(event)
                         }}
                     />
                 </div>
@@ -236,7 +272,8 @@ class FormSinhVien extends Component {
 }
 const mapStateToProps = (state) => ({
     sinhVienEdit: state.FormReducer.sinhVienEdit,
-    disabled: state.FormReducer.disabled
+    disabled: state.FormReducer.disabled,
+    arrListSinhVien: state.FormReducer.arrListSinhVien,
 })
 
 export default connect(mapStateToProps)(FormSinhVien);

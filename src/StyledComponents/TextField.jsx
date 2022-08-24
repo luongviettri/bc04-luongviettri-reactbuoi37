@@ -25,7 +25,11 @@ const CheckLoi = styled.span`
 `
 export const TextField = ({ label, loi, ...props }) => {
     return (
-        <div className="d-flex flex-column my-2" >
+        <div className="d-flex flex-column my-2"
+            style={{
+                height: "5rem"
+            }}
+        >
             <Label>
                 {label}
             </Label>

@@ -23,24 +23,11 @@ const initialState = {
             hoTen: 'Nguyen Van B',
             soDienThoai: '012346789',
             email: 'b.com',
-        },
-        {
-            ma: '3',
-            hoTen: 'Nguyen Van C',
-            soDienThoai: '012346789',
-            email: 'c tri .com',
-        },
-        {
-            ma: '4',
-            hoTen: 'Nguyen Van D',
-            soDienThoai: '012346789',
-            email: 'd.com',
-        },
+        }
     ],
-    sinhVienEdit: {
-    },
+    sinhVienEdit: {},
     disabled: false,
-    mangDuocTimKiem: []
+    kiTuTimKiem: ""
 }
 
 export default (state = initialState, { type, payload }) => {
@@ -85,11 +72,11 @@ export default (state = initialState, { type, payload }) => {
         }
         case TIM_KIEM_SINH_VIEN: {
             // ! payload là ten
-            console.log(payload);
-            let mangCanTim = state.arrListSinhVien.filter((sinhVien, index) => {
-                return sinhVien.hoTen.toLocaleLowerCase().includes(payload.toLocaleLowerCase());
-            })
-            state.mangDuocTimKiem = mangCanTim;
+            // let mangCanTim = state.arrListSinhVien.filter((sinhVien, index) => {
+            //     return sinhVien.hoTen.toLocaleLowerCase().includes(payload.toLocaleLowerCase());
+            // })
+            state.kiTuTimKiem = payload;
+            // state.mangDuocTimKiem = mangCanTim;
             return { ...state }
         }
         default:

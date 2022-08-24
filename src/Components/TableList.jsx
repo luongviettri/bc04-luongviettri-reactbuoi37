@@ -4,6 +4,8 @@ import { Table, Tbody, Td, Th, Thead, Tr } from '../StyledComponents/Table'
 import { Button } from '../StyledComponents/Button'
 import { actionSuaSinhVien, actionXoaSinhVien } from '../redux/actions/FormActions'
 class TableList extends Component {
+
+
     handleDelete = (maSinhVien) => {
         this.props.dispatch(actionXoaSinhVien(maSinhVien))
     }
@@ -11,35 +13,10 @@ class TableList extends Component {
         this.props.dispatch(actionSuaSinhVien(sinhVien))
     }
     renderListSinhVien = () => {
-        let { arrListSinhVien, mangDuocTimKiem } = this.props;
-        if (mangDuocTimKiem.length) {
-            return (
-                mangDuocTimKiem.map((sinhVien, index) => (
-                    <Tr
-                        key={index.toString + sinhVien.ma}
-                    >
-                        <Td>{sinhVien.ma}</Td>
-                        <Td>{sinhVien.hoTen}</Td>
-                        <Td>{sinhVien.soDienThoai}</Td>
-                        <Td>{sinhVien.email}</Td>
-                        <Td >
-                            <Button
-                                className='col-6 rounded mx-2 my-1 btn btn-success'
-                                onClick={() => {
-                                    this.handleEdit(sinhVien);
-                                }}
-                            >Sửa</Button>
 
-                            <Button
-                                className='col-6 rounded mx-2 my-1 btn btn-success'
-                                onClick={() => {
-                                    this.handleDelete(sinhVien.ma)
-                                }}
-                            >Xóa</Button>
-                        </Td>
-                    </Tr>
-                ))
-            )
+        let { arrListSinhVien, kiTuTimKiem } = this.props;
+        if (kiTuTimKiem.length) { //! nếu có tìm kiếm thì filter lại list
+            arrListSinhVien = arrListSinhVien.filter(item => item.hoTen.toLowerCase().includes(kiTuTimKiem.toLowerCase()))
         }
         return (
             arrListSinhVien.map((sinhVien, index) => (
@@ -91,7 +68,7 @@ class TableList extends Component {
 }
 const mapStateToProps = (state) => ({
     arrListSinhVien: state.FormReducer.arrListSinhVien,
-    mangDuocTimKiem: state.FormReducer.mangDuocTimKiem
+    kiTuTimKiem: state.FormReducer.kiTuTimKiem
 })
 
 export default connect(mapStateToProps)(TableList)
