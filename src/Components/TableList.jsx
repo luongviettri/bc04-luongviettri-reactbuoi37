@@ -41,33 +41,33 @@ class TableList extends Component {
                 ))
             )
         }
-        // return (
-        //     arrListSinhVien.map((sinhVien, index) => (
-        //         <Tr
-        //             key={index.toString + sinhVien.ma}
-        //         >
-        //             <Td>{sinhVien.ma}</Td>
-        //             <Td>{sinhVien.hoTen}</Td>
-        //             <Td>{sinhVien.soDienThoai}</Td>
-        //             <Td>{sinhVien.email}</Td>
-        //             <Td >
-        //                 <Button
-        //                     className='col-6 rounded mx-2 my-1 btn btn-success'
-        //                     onClick={() => {
-        //                         this.handleEdit(sinhVien);
-        //                     }}
-        //                 >Sửa</Button>
+        return (
+            arrListSinhVien.map((sinhVien, index) => (
+                <Tr
+                    key={index.toString + sinhVien.ma}
+                >
+                    <Td>{sinhVien.ma}</Td>
+                    <Td>{sinhVien.hoTen}</Td>
+                    <Td>{sinhVien.soDienThoai}</Td>
+                    <Td>{sinhVien.email}</Td>
+                    <Td >
+                        <Button
+                            className='col-6 rounded mx-2 my-1 btn btn-success'
+                            onClick={() => {
+                                this.handleEdit(sinhVien);
+                            }}
+                        >Sửa</Button>
 
-        //                 <Button
-        //                     className='col-6 rounded mx-2 my-1 btn btn-success'
-        //                     onClick={() => {
-        //                         this.handleDelete(sinhVien.ma)
-        //                     }}
-        //                 >Xóa</Button>
-        //             </Td>
-        //         </Tr>
-        //     ))
-        // )
+                        <Button
+                            className='col-6 rounded mx-2 my-1 btn btn-success'
+                            onClick={() => {
+                                this.handleDelete(sinhVien.ma)
+                            }}
+                        >Xóa</Button>
+                    </Td>
+                </Tr>
+            ))
+        )
     }
     render() {
         return (

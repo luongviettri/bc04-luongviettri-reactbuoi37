@@ -16,32 +16,31 @@ const initialState = {
             ma: '1',
             hoTen: 'Nguyen Van A',
             soDienThoai: '012346789',
-            email: 'anguyen@gmail.com',
+            email: 'a dong sun.com',
         },
         {
             ma: '2',
             hoTen: 'Nguyen Van B',
             soDienThoai: '012346789',
-            email: 'bnguyen@gmail.com',
+            email: 'b.com',
+        },
+        {
+            ma: '3',
+            hoTen: 'Nguyen Van C',
+            soDienThoai: '012346789',
+            email: 'c tri .com',
+        },
+        {
+            ma: '4',
+            hoTen: 'Nguyen Van D',
+            soDienThoai: '012346789',
+            email: 'd.com',
         },
     ],
     sinhVienEdit: {
     },
     disabled: false,
-    mangDuocTimKiem: [
-        {
-            ma: '1',
-            hoTen: 'Nguyen Van A',
-            soDienThoai: '012346789',
-            email: 'anguyen@gmail.com',
-        },
-        {
-            ma: '2',
-            hoTen: 'Nguyen Van B',
-            soDienThoai: '012346789',
-            email: 'bnguyen@gmail.com',
-        }
-    ]
+    mangDuocTimKiem: []
 }
 
 export default (state = initialState, { type, payload }) => {
@@ -85,16 +84,12 @@ export default (state = initialState, { type, payload }) => {
             }
         }
         case TIM_KIEM_SINH_VIEN: {
-            // ! payload là tên sinh viên
+            // ! payload là ten
+            console.log(payload);
             let mangCanTim = state.arrListSinhVien.filter((sinhVien, index) => {
                 return sinhVien.hoTen.toLocaleLowerCase().includes(payload.toLocaleLowerCase());
             })
-            payload.length ?
-                state.mangDuocTimKiem = mangCanTim
-                :
-                state.mangDuocTimKiem = state.arrListSinhVien
-
-
+            state.mangDuocTimKiem = mangCanTim;
             return { ...state }
         }
         default:

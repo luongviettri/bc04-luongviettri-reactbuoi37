@@ -10,7 +10,6 @@ import { H2 } from "../StyledComponents/H2";
 import { TextField } from "../StyledComponents/TextField";
 import { Button } from "../StyledComponents/Button";
 import { connect } from "react-redux";
-import { debounce } from "lodash";
 class FormSinhVien extends Component {
     constructor(props) {
         super(props);
@@ -127,18 +126,13 @@ class FormSinhVien extends Component {
 
     }
 
-
-
-    handleInputDebounce = (event) => {
-        debounce(
-            this.searchInput(event)
-            , 100)
-    }
+    // handleInputDebounce = (event) => {
+    //     debounce(this.searchInput(event), 1000)
+    // }
     searchInput = (event) => {
         let { value } = event.target;
         this.props.dispatch(actionTimKiem(value))
     }
-
 
     render() {
         return (
@@ -225,7 +219,7 @@ class FormSinhVien extends Component {
                         type="text"
                         className="w-50 rounded border border-success py-2 px-2"
                         onChange={(event) => {
-                            this.handleInputDebounce(event)
+                            this.searchInput(event)
                         }}
                     />
                 </div>
